@@ -8,7 +8,6 @@ class QuoteScreen extends StatefulWidget {
 }
 
 class _QuoteScreenState extends State<QuoteScreen> {
-
   Widget buildBlocWidget() {
     return Expanded(
       child: Column(
@@ -18,21 +17,26 @@ class _QuoteScreenState extends State<QuoteScreen> {
           Flexible(
             child: Card(
               elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: BlocBuilder<QuoteCubit, QuoteState>(
                   builder: (context, state) {
-                   if (state is QuoteLoaded && state.quote.isNotEmpty) {
+                    if (state is QuoteLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (state is QuoteLoaded && state.quote.isNotEmpty) {
                       return Text(
                         state.quote.first.quote,
-                        style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                        style: TextStyle(
+                            fontSize: 18, fontStyle: FontStyle.italic),
                         textAlign: TextAlign.center,
                       );
                     } else {
                       return Text(
                         "Press the button to fetch a quote",
-                        style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                        style: TextStyle(
+                            fontSize: 18, fontStyle: FontStyle.italic),
                         textAlign: TextAlign.center,
                       );
                     }

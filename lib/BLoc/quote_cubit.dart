@@ -11,9 +11,14 @@ class QuoteCubit extends Cubit<QuoteState> {
   QuoteCubit({required this.quoteRepository}) : super(QuoteInitial());
 
   void getRandomQuote() {
-    quoteRepository.getRandomQuote().then((fetchedQuote) {
-      this.quote = fetchedQuote;
-      emit(QuoteLoaded(quote: quote));
-    });
+    emit(QuoteLoading()); // Emit loading state
+    try {
+      quoteRepository.getRandomQuote().then((fetchedQuote) {
+        this.quote = fetchedQuote;
+        emit(QuoteLoaded(quote: quote));
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
