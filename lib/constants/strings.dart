@@ -1,1 +1,1 @@
-final quoteBaseURL = "https://api.quotable.io/";
+final quoteBaseURL = 'https://api.api-ninjas.com/v1/quotes';

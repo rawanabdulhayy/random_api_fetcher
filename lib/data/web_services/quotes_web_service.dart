@@ -4,36 +4,32 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:random_api_fetce/constants/strings.dart';
 
 class QuotesWebService {
-  Future<List<dynamic>> getRandomQuote({
-    int? maxLength,
-    int? minLength,
-    String? tags,
-    String? author,
-  }) async {
+  Future<List<dynamic>> getRandomQuote() async {
     try {
-      final queryParams = {
-        if (maxLength != null) 'maxLength': maxLength.toString(),
-        if (minLength != null) 'minLength': minLength.toString(),
-        if (tags != null) 'tags': tags,
-        if (author != null) 'author': author,
-      };
-
-      final uri = Uri.parse(quoteBaseURL).replace(queryParameters: queryParams);
+      final uri = Uri.parse(quoteBaseURL);
       final response = await http.get(
         uri,
         headers: {
-          'X-Api-Key': dotenv.env['API_KEY'] ?? '',
           'Content-Type': 'application/json',
+          'X-Api-Key': dotenv.env['API_KEY'] ?? '', // Ensure API key is loaded
         },
       );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        return [data as Map<String, dynamic>];
-        //listing the single json object returned
 
+        if (data is List) {
+          return data;
+        } else if (data is Map<String, dynamic>) {
+          if (data.containsKey("results") && data["results"] is List) {
+            return data["results"] as List<dynamic>;
+          }
+          return [data];
+        } else {
+          throw Exception("Unexpected API response format");
+        }
       } else {
-        throw Exception('Failed to load quotes');
+        throw Exception("Failed to fetch quotes. Status code: ${response.statusCode}");
       }
     } catch (e) {
       print('Error fetching API data: $e');
