@@ -1,0 +1,1 @@
+final quoteBaseURL = "https://api.quotable.io/";
