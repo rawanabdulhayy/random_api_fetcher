@@ -66,7 +66,7 @@ class _QuoteScreenState extends State<QuoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Random Quote")),
+        title: Center(child: Text("Random Quote", style: TextStyle(color: Colors.white),)),
         backgroundColor: Colors.deepPurple,
       ),
       body: Center(
